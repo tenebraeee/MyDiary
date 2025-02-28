@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MyDiary.SettingsPage"
+             Title="Настройки">
+    <VerticalStackLayout>
+        <HorizontalStackLayout HorizontalOptions="CenterAndExpand">
+            <Entry Text="{Binding Password}" Placeholder="Пароль" ClearButtonVisibility="WhileEditing" IsPassword="{Binding Source={x:Reference hidePassword}, Path=IsChecked }"></Entry>
+            <Label Text="Скрыть"></Label>
+            <CheckBox x:Name="hidePassword" IsChecked="true"></CheckBox>
+        </HorizontalStackLayout>
+
+        <Button Text="Сохранить" Command="{Binding SaveCommand}" MaximumWidthRequest="150"/>
+    </VerticalStackLayout>
+
+</ContentPage>
