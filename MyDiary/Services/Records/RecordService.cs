@@ -1,27 +1,27 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MyDiary.Db;
+﻿using EntityFrameworkCore.UnitOfWork.Interfaces;
 using MyDiary.Db.Entities;
 using MyDiary.Services.Records.Models;
-using System.Net.Mime;
 
 namespace MyDiary.Services.Records
 {
     internal class RecordService : IRecordService
     {
-        private readonly SqlContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
 
         public RecordService(
-                SqlContext context
+                IUnitOfWork unitOfWork
             )
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
 
         public async Task UpdateOrCreateAsync(RecordModel model)
         {
-            var record = await _context.Set<Record>().FirstOrDefaultAsync(r => r.Date == model.Date);
+            var repository = _unitOfWork.Repository<Record>();
+
+            var record = await GetByDateAsync(model.Date);
 
             if (record == null)
             {
@@ -30,14 +30,14 @@ namespace MyDiary.Services.Records
                     Text = model.Text,
                     Date = model.Date,
                 };
-                await _context.AddAsync(@new);
+                await repository.AddAsync(@new);
             }
             else
             {
                 record.Text = model.Text;
             }
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public void UpdateOrCreate(RecordModel model)
@@ -48,7 +48,7 @@ namespace MyDiary.Services.Records
 
         public async Task<RecordModel?> GetAsync(DateOnly date)
         {
-            var record = await _context.Set<Record>().FirstOrDefaultAsync(r => r.Date == date);
+            var record = await GetByDateAsync(date);
 
             if (record == null)
             {
@@ -64,35 +64,34 @@ namespace MyDiary.Services.Records
 
         public RecordModel? Get(DateOnly date)
         {
-            var record = _context.Set<Record>().FirstOrDefault(r => r.Date == date);
+            var task = GetAsync(date);
+            task.Wait();
 
-            if (record == null)
-            {
-                return null;
-            }
-
-            return new RecordModel
-            {
-                Date = record.Date,
-                Text = record.Text,
-            };
-        }
-
-        public async Task<ICollection<RecordModel>> GetAllAsync()
-        {
-            return await _context.Set<Record>().Select(r => new RecordModel
-            {
-                Date = r.Date,
-                Text = r.Text,
-            }).ToArrayAsync();
+            return task.Result;
         }
 
         public ICollection<RecordModel> GetAll()
         {
-            var task = GetAllAsync();
-            task.Wait();
+            var repository = _unitOfWork.Repository<Record>();
+            var query = repository.MultipleResultQuery()
+                .Select(r => new RecordModel
+                {
+                    Date = r.Date,
+                    Text = r.Text,
+                });
+            var items = repository.Search(query);
 
-            return task.Result;
+            return items;
+        }
+
+
+        private async Task<Record> GetByDateAsync(DateOnly date)
+        {
+            var repository = _unitOfWork.Repository<Record>();
+            var query = repository.SingleResultQuery()
+                .AndFilter(r => r.Date == date);
+
+            return await repository.FirstOrDefaultAsync(query);
         }
     }
 }

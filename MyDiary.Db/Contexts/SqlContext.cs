@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyDiary.Db.Entities;
 
-namespace MyDiary.Db
+namespace MyDiary.Db.Contexts
 {
     public class SqlContext : DbContext
     {
         public SqlContext(DbContextOptions<SqlContext> options) : base(options)
         {
-            
+
         }
 
         public DbSet<Record> Records { get; set; }

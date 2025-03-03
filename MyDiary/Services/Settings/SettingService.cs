@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MyDiary.Db;
+﻿using EntityFrameworkCore.UnitOfWork.Interfaces;
 using MyDiary.Db.Entities;
 using MyDiary.Services.Settings.Models;
 
@@ -7,14 +6,14 @@ namespace MyDiary.Services.Settings
 {
     internal class SettingService : ISettingService
     {
-        private readonly SqlContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
 
         public SettingService(
-                SqlContext context
+                IUnitOfWork unitOfWork
             )
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
 
@@ -36,7 +35,7 @@ namespace MyDiary.Services.Settings
             var setting = await GetAsync();
             setting.Password = model.Password;
             
-            await _context.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
         }
 
 
@@ -56,7 +55,10 @@ namespace MyDiary.Services.Settings
 
         private async Task<Setting?> GetFirstAsync()
         {
-            return await _context.Set<Setting>().FirstOrDefaultAsync();
+            var repository = _unitOfWork.Repository<Setting>();
+            var query = repository.SingleResultQuery();
+
+            return await repository.FirstOrDefaultAsync(query);
         }
 
         private Setting InitializeNew()
@@ -66,8 +68,10 @@ namespace MyDiary.Services.Settings
 
         private async Task<Setting> CreateAsync(Setting setting)
         {
-            await _context.AddAsync(setting);
-            await _context.SaveChangesAsync();
+            var repository = _unitOfWork.Repository<Setting>();
+
+            await repository.AddAsync(setting);
+            await _unitOfWork.SaveChangesAsync();
 
             return setting;
         }

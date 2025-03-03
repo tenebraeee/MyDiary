@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using MyDiary.Db;
 using MyDiary.Extensions;
 using Microsoft.Maui.Foldable;
+using MyDiary.Db.Contexts;
+using MyDiary.Db;
 
 namespace MyDiary
 {
@@ -22,10 +23,7 @@ namespace MyDiary
                 .RegisterModels()
                 .RegisterServices()
                 .RegisterViews()
-                .Services.AddDbContext<SqlContext>(o => 
-                {
-                    o.UseSqlite($"Data Source={Path.Combine(FileSystem.AppDataDirectory, "diary.db")}");
-                }); //todo: вынести в метод расширения
+                .Services.RegisterDb($"Data Source={Path.Combine(FileSystem.AppDataDirectory, "diary.db")}"); //todo: вынести в метод расширения
             
 #if DEBUG
             builder.Logging.AddDebug();

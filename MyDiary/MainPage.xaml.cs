@@ -4,10 +4,10 @@ using Microsoft.UI;
 using WinRT.Interop;
 #endif
 
-using MyDiary.Db;
 using MyDiary.Services.Records;
 using MyDiary.Services.Settings;
 using MyDiary.ViewModels;
+using MyDiary.Db.Contexts;
 
 namespace MyDiary
 {

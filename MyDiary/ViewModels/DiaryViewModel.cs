@@ -5,9 +5,6 @@ using Plugin.Maui.Calendar.Models;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using Plugin.Maui.Calendar.Models;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MyDiary.ViewModels
 {
@@ -69,15 +66,6 @@ namespace MyDiary.ViewModels
             set
             {
                 diary.Date = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string DateStr
-        {
-            get => "20-02-2012";
-            set
-            {
                 OnPropertyChanged();
             }
         }
