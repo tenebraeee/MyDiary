@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MyDiary.Db.Entities;
+﻿using Core.Db.Entities;
+using Microsoft.EntityFrameworkCore;
 
-namespace MyDiary.Db.Contexts
+namespace Core.Db.Contexts
 {
     public class SqlContext : DbContext
     {

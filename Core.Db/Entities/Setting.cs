@@ -1,6 +1,6 @@
-﻿using MyDiary.Db.Entities.Abstractions;
+﻿using Core.Db.Entities.Abstractions;
 
-namespace MyDiary.Db.Entities
+namespace Core.Db.Entities
 {
     public class Setting : BaseDataType
     {

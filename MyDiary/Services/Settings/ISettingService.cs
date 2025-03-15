@@ -1,4 +1,4 @@
-﻿using MyDiary.Db.Entities;
+﻿using Core.Db.Entities;
 using MyDiary.Services.Settings.Models;
 
 namespace MyDiary.Services.Settings

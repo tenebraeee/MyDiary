@@ -1,4 +1,4 @@
-using MyDiary.Db.Contexts;
+using Core.Db.Contexts;
 using MyDiary.Services.Records;
 using MyDiary.Services.Settings;
 using MyDiary.ViewModels;

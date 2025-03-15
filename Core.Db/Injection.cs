@@ -1,9 +1,9 @@
-﻿using EntityFrameworkCore.UnitOfWork.Extensions;
+﻿using Core.Db.Contexts;
+using EntityFrameworkCore.UnitOfWork.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using MyDiary.Db.Contexts;
 
-namespace MyDiary.Db
+namespace Core.Db
 {
     public static class Injection
     {

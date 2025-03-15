@@ -1,9 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Core.Db;
 using Microsoft.Extensions.Logging;
-using MyDiary.Extensions;
 using Microsoft.Maui.Foldable;
-using MyDiary.Db.Contexts;
-using MyDiary.Db;
+using MyDiary.Extensions;
 
 namespace MyDiary
 {

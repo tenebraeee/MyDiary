@@ -1,5 +1,5 @@
-﻿using EntityFrameworkCore.UnitOfWork.Interfaces;
-using MyDiary.Db.Entities;
+﻿using Core.Db.Entities;
+using EntityFrameworkCore.UnitOfWork.Interfaces;
 using MyDiary.Services.Records.Models;
 
 namespace MyDiary.Services.Records

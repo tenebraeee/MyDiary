@@ -7,7 +7,7 @@ using WinRT.Interop;
 using MyDiary.Services.Records;
 using MyDiary.Services.Settings;
 using MyDiary.ViewModels;
-using MyDiary.Db.Contexts;
+using Core.Db.Contexts;
 
 namespace MyDiary
 {

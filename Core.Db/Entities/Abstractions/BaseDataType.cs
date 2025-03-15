@@ -1,4 +1,4 @@
-﻿namespace MyDiary.Db.Entities.Abstractions
+﻿namespace Core.Db.Entities.Abstractions
 {
     public class BaseDataType
     {
