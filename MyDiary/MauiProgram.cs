@@ -1,4 +1,5 @@
 ﻿using Core.Db;
+using Core.Services;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Foldable;
 using MyDiary.Extensions;
@@ -19,10 +20,11 @@ namespace MyDiary
                 })
                 .UseFoldable()
                 .RegisterModels()
-                .RegisterServices()
-                .RegisterViews()
-                .Services.RegisterDb($"Data Source={Path.Combine(FileSystem.AppDataDirectory, "diary.db")}"); //todo: вынести в метод расширения
-            
+                .RegisterViews();
+
+            builder.Services.RegisterDb($"Data Source={Path.Combine(FileSystem.AppDataDirectory, "diary.db")}");
+            builder.Services.RegisterServices();
+
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

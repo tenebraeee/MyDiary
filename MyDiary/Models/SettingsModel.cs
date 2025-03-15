@@ -1,6 +1,6 @@
 ﻿namespace MyDiary.Models
 {
-    public class SettingsModel
+    internal class SettingsModel
     {
         public string? Password { get; set; }
     }
