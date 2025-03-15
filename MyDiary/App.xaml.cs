@@ -1,6 +1,4 @@
-﻿using Core.Db.Contexts;
-using MyDiary.Services.Records;
-using MyDiary.Services.Settings;
+﻿using MyDiary.Services.Settings;
 
 namespace MyDiary
 {
@@ -8,11 +6,13 @@ namespace MyDiary
     {
         private readonly IServiceProvider _serviceProvider;
 
+
         public App(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
             InitializeComponent();
         }
+
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
@@ -20,20 +20,13 @@ namespace MyDiary
             var setting = settingService.Get();
 
             var page = default(Page);
-            if (string.IsNullOrWhiteSpace(setting.Password))
+            if (setting.IsPasswordDefined)
             {
-                page = new MainPage(
-                        _serviceProvider.GetRequiredService<SqlContext>(),
-                        _serviceProvider.GetRequiredService<IRecordService>()
-                    );
+                page = _serviceProvider.GetRequiredService<PasswordInputPage>();
             }
             else
             {
-                page = new PasswordInputPage(
-                        _serviceProvider.GetRequiredService<SqlContext>(),
-                        _serviceProvider.GetRequiredService<IRecordService>(),
-                        _serviceProvider.GetRequiredService<ISettingService>()
-                    );
+                page = _serviceProvider.GetRequiredService<MainPage>();
             }
 
             var window = new Window(new AppShell())

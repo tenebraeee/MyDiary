@@ -1,4 +1,3 @@
-using Core.Db.Contexts;
 using MyDiary.Services.Records;
 using MyDiary.Services.Settings;
 using MyDiary.ViewModels;
@@ -7,25 +6,28 @@ namespace MyDiary;
 
 public partial class PasswordInputPage : ContentPage
 {
-	private readonly SqlContext _context;
 	private readonly IRecordService _recordService;
+	private readonly IServiceProvider _serviceProvider;
 
 	public PasswordInputPage(
-            SqlContext context,
             IRecordService recordService,
-            ISettingService settingService
+            ISettingService settingService,
+            IServiceProvider serviceProvider
         )
 	{
-		_context = context;
 		_recordService = recordService;
 
         InitializeComponent();
 
-		BindingContext = new PasswordInputViewModel(settingService, OnCorrectPasswordEntered);
+		_serviceProvider = serviceProvider;
+
+        BindingContext = new PasswordInputViewModel(settingService, OnCorrectPasswordEntered);
 	}
 
 	public void OnCorrectPasswordEntered()
 	{
-		Navigation.PushAsync(new MainPage(_context, _recordService));
+		var mainPage = _serviceProvider.GetRequiredService<MainPage>();
+
+        Navigation.PushAsync(mainPage);
 	}
 }

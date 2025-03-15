@@ -1,5 +1,4 @@
-﻿
-#if WINDOWS
+﻿#if WINDOWS
 using Microsoft.UI;
 using WinRT.Interop;
 #endif
@@ -7,16 +6,15 @@ using WinRT.Interop;
 using MyDiary.Services.Records;
 using MyDiary.Services.Settings;
 using MyDiary.ViewModels;
-using Core.Db.Contexts;
 
 namespace MyDiary
 {
     public partial class MainPage : ContentPage
     {
-        public MainPage(SqlContext sqlContext, IRecordService service)
+        public MainPage(
+                IRecordService service
+            )
         {
-            sqlContext.Database.EnsureCreated();
-
             InitializeComponent();
 
             BindingContext = new DiaryViewModel(service);
@@ -59,10 +57,13 @@ namespace MyDiary
 
         private async void MenuFlyoutItem_Clicked(object sender, EventArgs e)
         {
-            var settingService = Handler.GetService<ISettingService>();
+            if (Handler == null)
+            {
+                return;
+            }
 
+            var settingService = Handler.GetRequiredService<ISettingService>();
             await Navigation.PushAsync(new SettingsPage(settingService));
         }
     }
-
 }
