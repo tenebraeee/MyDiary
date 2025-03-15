@@ -5,10 +5,16 @@ namespace Core.Db.Contexts
 {
     public class SqlContext : DbContext
     {
+        public SqlContext()
+        {
+            
+        }
+
         public SqlContext(DbContextOptions<SqlContext> options) : base(options)
         {
 
         }
+
 
         public DbSet<Record> Records { get; set; }
         public DbSet<Setting> Settings { get; set; }
@@ -16,7 +22,7 @@ namespace Core.Db.Contexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite($"Data Source=diary.db"); //todo: вынести эту инфу
+            optionsBuilder.UseSqlite($"Data Source=diary.db");
         }
     }
 }

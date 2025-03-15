@@ -22,14 +22,17 @@ namespace MyDiary
                 .RegisterModels()
                 .RegisterViews();
 
-            builder.Services.RegisterDb($"Data Source={Path.Combine(FileSystem.AppDataDirectory, "diary.db")}");
+            builder.Services.RegisterDb();
             builder.Services.RegisterServices();
 
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
+            var app = builder.Build();
 
-            return builder.Build();
+            app.Services.MigrateDb();
+
+            return app;
         }
     }
 }

@@ -8,19 +8,24 @@ namespace Core.Db
     public static class Injection
     {
         public static IServiceCollection RegisterDb(
-                this IServiceCollection services,
-                     string connectionString
+                this IServiceCollection services
             )
         {
-            services.AddDbContext<SqlContext>(o =>
-                 {
-                     o.UseSqlite(connectionString);
-                 });
+            services.AddDbContext<SqlContext>();
 
             services.AddScoped<DbContext, SqlContext>();
             services.AddUnitOfWork();
 
             return services;
+        }
+
+        public static void MigrateDb(this IServiceProvider provider)
+        {
+            var factory = provider.GetRequiredService<IServiceScopeFactory>();
+            using var scope = factory.CreateScope();
+            using var context = scope.ServiceProvider.GetRequiredService<DbContext>();
+
+            context.Database.Migrate();
         }
     }
 }

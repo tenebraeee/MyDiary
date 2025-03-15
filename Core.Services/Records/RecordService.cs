@@ -42,8 +42,25 @@ namespace MyDiary.Services.Records
 
         public void UpdateOrCreate(RecordModel model)
         {
-            var task = UpdateOrCreateAsync(model);
-            task.Wait();
+            var repository = _unitOfWork.Repository<Record>();
+
+            var record = GetByDate(model.Date);
+
+            if (record == null)
+            {
+                var @new = new Record
+                {
+                    Text = model.Text,
+                    Date = model.Date,
+                };
+                repository.Add(@new);
+            }
+            else
+            {
+                record.Text = model.Text;
+            }
+
+            _unitOfWork.SaveChanges();
         }
 
         public async Task<RecordModel?> GetAsync(DateOnly date)
@@ -92,6 +109,15 @@ namespace MyDiary.Services.Records
                 .AndFilter(r => r.Date == date);
 
             return await repository.FirstOrDefaultAsync(query);
+        }
+
+        private Record GetByDate(DateOnly date)
+        {
+            var repository = _unitOfWork.Repository<Record>();
+            var query = repository.SingleResultQuery()
+                .AndFilter(r => r.Date == date);
+
+            return repository.FirstOrDefault(query);
         }
     }
 }

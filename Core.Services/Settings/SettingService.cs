@@ -24,10 +24,7 @@ namespace MyDiary.Services.Settings
 
         public Setting Get()
         {
-            var task = GetAsync();
-            task.Wait();
-
-            return task.Result;
+            return EnsureCreated();
         }
 
         public async Task UpdateAsync(SettingModel model)
@@ -53,12 +50,34 @@ namespace MyDiary.Services.Settings
             return await CreateAsync(@new);
         }
 
+        private Setting EnsureCreated()
+        {
+            var setting = GetFirst();
+
+            if (setting != null)
+            {
+                return setting;
+            }
+
+            var @new = InitializeNew();
+
+            return Create(@new);
+        }
+
         private async Task<Setting?> GetFirstAsync()
         {
             var repository = _unitOfWork.Repository<Setting>();
             var query = repository.SingleResultQuery();
 
             return await repository.FirstOrDefaultAsync(query);
+        }
+
+        private Setting GetFirst()
+        {
+            var repository = _unitOfWork.Repository<Setting>();
+            var query = repository.SingleResultQuery();
+
+            return repository.FirstOrDefault(query);
         }
 
         private Setting InitializeNew()
@@ -72,6 +91,16 @@ namespace MyDiary.Services.Settings
 
             await repository.AddAsync(setting);
             await _unitOfWork.SaveChangesAsync();
+
+            return setting;
+        }
+
+        private Setting Create(Setting setting)
+        {
+            var repository = _unitOfWork.Repository<Setting>();
+
+            repository.Add(setting);
+            _unitOfWork.SaveChanges();
 
             return setting;
         }
