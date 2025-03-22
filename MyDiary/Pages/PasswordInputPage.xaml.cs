@@ -1,30 +1,29 @@
-using MyDiary.Services.Records;
-using MyDiary.Services.Settings;
+using MyDiary.Pages;
 using MyDiary.ViewModels;
 
 namespace MyDiary;
 
 public partial class PasswordInputPage : ContentPage
 {
-	private readonly IServiceProvider _serviceProvider;
+	private readonly IViewFactory _viewFactory;
 
 
 	public PasswordInputPage(
-            ISettingService settingService,
-            IServiceProvider serviceProvider
+            IViewFactory viewFactory,
+			PasswordInputViewModel viewModel
         )
 	{
         InitializeComponent();
 
-		_serviceProvider = serviceProvider;
-
-        BindingContext = new PasswordInputViewModel(settingService, OnCorrectPasswordEntered);
+        _viewFactory = viewFactory;
+		viewModel.OnCorrectPasswordEntered = OnCorrectPasswordEntered;
+        BindingContext = viewModel;
 	}
 
 
 	public void OnCorrectPasswordEntered()
 	{
-		var mainPage = _serviceProvider.GetRequiredService<MainPage>();
+		var mainPage = _viewFactory.Get<MainPage>();
 
         Navigation.PushAsync(mainPage);
 	}

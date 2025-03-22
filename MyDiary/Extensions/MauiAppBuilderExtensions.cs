@@ -1,9 +1,14 @@
-﻿namespace MyDiary.Extensions
+﻿using MyDiary.Pages;
+using MyDiary.ViewModels;
+
+namespace MyDiary.Extensions
 {
     public static class MauiAppBuilderExtensions
     {
         public static MauiAppBuilder RegisterViews(this MauiAppBuilder builder)
         {
+            builder.Services.AddTransient<IViewFactory, ViewFactory>();
+
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<PasswordInputPage>();
             builder.Services.AddTransient<SettingsPage>();
@@ -13,6 +18,10 @@
 
         public static MauiAppBuilder RegisterModels(this MauiAppBuilder builder)
         {
+            builder.Services.AddTransient<DiaryViewModel>();
+            builder.Services.AddTransient<PasswordInputViewModel>();
+            builder.Services.AddTransient<SettingsViewModel>();
+
             return builder;
         }
     }

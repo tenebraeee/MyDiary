@@ -1,16 +1,25 @@
-﻿using MyDiary.Services.Settings;
+﻿using MyDiary.Pages;
+using MyDiary.Services.Settings;
 
 namespace MyDiary
 {
     public partial class App : Application
     {
         private readonly IServiceProvider _serviceProvider;
+        private readonly IViewFactory _viewFactory;
 
 
-        public App(IServiceProvider serviceProvider)
+        public App(
+                IServiceProvider serviceProvider,
+                IViewFactory viewFactory
+            )
         {
             _serviceProvider = serviceProvider;
+            _viewFactory = viewFactory;
+
             InitializeComponent();
+
+            Routing.RegisterRoute(nameof(MainPage), typeof(MainPage));
         }
 
 
@@ -22,11 +31,11 @@ namespace MyDiary
             var page = default(Page);
             if (setting.IsPasswordDefined)
             {
-                page = _serviceProvider.GetRequiredService<PasswordInputPage>();
+                page = _viewFactory.Get<PasswordInputPage>();
             }
             else
             {
-                page = _serviceProvider.GetRequiredService<MainPage>();
+                page = _viewFactory.Get<MainPage>();
             }
 
             var window = new Window(new AppShell())

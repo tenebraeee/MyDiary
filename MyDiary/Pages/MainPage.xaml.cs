@@ -3,21 +3,26 @@ using Microsoft.UI;
 using WinRT.Interop;
 #endif
 
-using MyDiary.Services.Records;
-using MyDiary.Services.Settings;
 using MyDiary.ViewModels;
+using MyDiary.Pages;
 
 namespace MyDiary
 {
     public partial class MainPage : ContentPage
     {
+        private readonly IViewFactory _viewFactory;
+
+
         public MainPage(
-                IRecordService service
+                IViewFactory viewFactory,
+                DiaryViewModel viewModel
             )
         {
             InitializeComponent();
 
-            BindingContext = new DiaryViewModel(service);
+            _viewFactory = viewFactory;
+
+            BindingContext = viewModel;
         }
 
 
@@ -62,8 +67,7 @@ namespace MyDiary
                 return;
             }
 
-            var settingService = Handler.GetRequiredService<ISettingService>();
-            await Navigation.PushAsync(new SettingsPage(settingService));
+            await Navigation.PushAsync(_viewFactory.Get<SettingsPage>());
         }
     }
 }

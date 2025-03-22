@@ -15,7 +15,7 @@ namespace MyDiary.ViewModels
         public ICommand PasswordCheckCommand { get; set; }
 
 
-        public PasswordInputViewModel(ISettingService settingService, Action action)
+        public PasswordInputViewModel(ISettingService settingService)
         {
             model = new PasswordInputModel();
 
@@ -24,7 +24,7 @@ namespace MyDiary.ViewModels
                 var setting = settingService.Get();
                 if (setting.Password == Password)
                 {
-                    action();
+                    OnCorrectPasswordEntered();
                     Password = null;
                 }
             });
@@ -43,6 +43,8 @@ namespace MyDiary.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public required Action OnCorrectPasswordEntered { get; set; }
 
         public void OnPropertyChanged([CallerMemberName] string prop = "")
         {

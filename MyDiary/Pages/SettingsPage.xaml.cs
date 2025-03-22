@@ -5,10 +5,10 @@ namespace MyDiary;
 
 public partial class SettingsPage : ContentPage
 {
-	public SettingsPage(ISettingService settingService)
+	public SettingsPage(SettingsViewModel viewModel)
 	{
 		InitializeComponent();
 
-		BindingContext = new SettingsViewModel(settingService);
+		BindingContext = viewModel;
     }
 }

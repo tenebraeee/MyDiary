@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace MyDiary.ViewModels
 {
-    internal class DiaryViewModel : INotifyPropertyChanged
+    public class DiaryViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
         public ICommand SaveCommand { get; set; }
