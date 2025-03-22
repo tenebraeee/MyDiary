@@ -1,4 +1,3 @@
-using MyDiary.Services.Settings;
 using MyDiary.ViewModels;
 
 namespace MyDiary;

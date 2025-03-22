@@ -4,23 +4,17 @@ using WinRT.Interop;
 #endif
 
 using MyDiary.ViewModels;
-using MyDiary.Pages;
 
 namespace MyDiary
 {
     public partial class MainPage : ContentPage
     {
-        private readonly IViewFactory _viewFactory;
-
-
         public MainPage(
-                IViewFactory viewFactory,
                 DiaryViewModel viewModel
             )
         {
             InitializeComponent();
 
-            _viewFactory = viewFactory;
 
             BindingContext = viewModel;
         }
@@ -67,7 +61,7 @@ namespace MyDiary
                 return;
             }
 
-            await Navigation.PushAsync(_viewFactory.Get<SettingsPage>());
+            await Shell.Current.GoToAsync(PageRoutes.Settings);
         }
     }
 }

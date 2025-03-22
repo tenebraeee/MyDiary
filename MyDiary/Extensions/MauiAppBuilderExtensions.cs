@@ -1,4 +1,5 @@
 ﻿using MyDiary.Pages;
+using MyDiary.Pages.Behaviours;
 using MyDiary.ViewModels;
 
 namespace MyDiary.Extensions
@@ -8,6 +9,7 @@ namespace MyDiary.Extensions
         public static MauiAppBuilder RegisterViews(this MauiAppBuilder builder)
         {
             builder.Services.AddTransient<IViewFactory, ViewFactory>();
+            builder.Services.AddTransient<ICorrectPasswordEneteredBehaviour, CorrectPasswordEneteredBehaviour>();
 
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<PasswordInputPage>();

@@ -5,14 +5,17 @@
         public AppShell()
         {
             InitializeComponent();
+
+            Routing.RegisterRoute(PageRoutes.Main, typeof(MainPage));
+            Routing.RegisterRoute(PageRoutes.PasswordInput, typeof(PasswordInputPage));
+            Routing.RegisterRoute(PageRoutes.Settings, typeof(SettingsPage));
         }
     }
 
-    public class CustomDataTemplateSelector : DataTemplateSelector
+    public static class PageRoutes
     {
-        protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
-        {
-            throw new NotImplementedException();
-        }
+        public static readonly string Main = nameof(MainPage);
+        public static readonly string PasswordInput = nameof(PasswordInputPage);
+        public static readonly string Settings = nameof(SettingsPage);
     }
 }
