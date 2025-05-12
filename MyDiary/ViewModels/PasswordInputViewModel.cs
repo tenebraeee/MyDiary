@@ -1,4 +1,5 @@
 ﻿using MyDiary.Models;
+using MyDiary.Pages.Behaviours;
 using MyDiary.Services.Settings;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -15,7 +16,10 @@ namespace MyDiary.ViewModels
         public ICommand PasswordCheckCommand { get; set; }
 
 
-        public PasswordInputViewModel(ISettingService settingService, Action action)
+        public PasswordInputViewModel(
+                ISettingService settingService,
+                ICorrectPasswordEneteredBehaviour correctPasswordEneteredBehaviour
+            )
         {
             model = new PasswordInputModel();
 
@@ -24,7 +28,7 @@ namespace MyDiary.ViewModels
                 var setting = settingService.Get();
                 if (setting.Password == Password)
                 {
-                    action();
+                    correctPasswordEneteredBehaviour.Execute();
                     Password = null;
                 }
             });

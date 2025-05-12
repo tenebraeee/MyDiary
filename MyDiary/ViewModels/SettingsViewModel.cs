@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace MyDiary.ViewModels
 {
-    internal class SettingsViewModel : INotifyPropertyChanged
+    public class SettingsViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
         private readonly SettingsModel _model;

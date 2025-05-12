@@ -1,25 +1,22 @@
-﻿
-#if WINDOWS
+﻿#if WINDOWS
 using Microsoft.UI;
 using WinRT.Interop;
 #endif
 
-using MyDiary.Db;
-using MyDiary.Services.Records;
-using MyDiary.Services.Settings;
 using MyDiary.ViewModels;
 
 namespace MyDiary
 {
     public partial class MainPage : ContentPage
     {
-        public MainPage(SqlContext sqlContext, IRecordService service)
+        public MainPage(
+                DiaryViewModel viewModel
+            )
         {
-            sqlContext.Database.EnsureCreated();
-
             InitializeComponent();
 
-            BindingContext = new DiaryViewModel(service);
+
+            BindingContext = viewModel;
         }
 
 
@@ -59,10 +56,12 @@ namespace MyDiary
 
         private async void MenuFlyoutItem_Clicked(object sender, EventArgs e)
         {
-            var settingService = Handler.GetService<ISettingService>();
+            if (Handler == null)
+            {
+                return;
+            }
 
-            await Navigation.PushAsync(new SettingsPage(settingService));
+            await Shell.Current.GoToAsync(PageRoutes.Settings);
         }
     }
-
 }
